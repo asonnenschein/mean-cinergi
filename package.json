@@ -1,15 +1,24 @@
 {
   "name": "mean-cinergi",
-  "version": "0.0.1",
-  "description": "Some description of mean-cinergi",
-  "author": {
-    "name": "mean scaffold"
+  "version": "0.0.0",
+  "description": "Web application which provides user and organizational management and controls in the form of command line tools and a graphical user interface to complement  the CINERGI database and server ecosystem.  Built on top of the  [MEAN](http://mean.io/#!/) JavaScript fullstack.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "mean": "0.4.0",
-  "engines": {
-    "node": "0.10.x",
-    "npm": "1.4.x"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CINERGI/mean-cinergi.git"
   },
-  "dependencies": {},
-  "license": "MIT"
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CINERGI/mean-cinergi/issues"
+  },
+  "homepage": "https://github.com/CINERGI/mean-cinergi",
+  "dependencies": {
+    "express": "4.9.8",
+    "body-parser": "1.9.0",
+    "mongoose": "3.8.17"
+  }
 }
