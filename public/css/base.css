@@ -1,0 +1,6 @@
+/* Set max content container width */
+@media (min-width: 970px) {
+    .container {
+        width: 970px;
+    }
+}

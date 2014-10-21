@@ -10,10 +10,15 @@ server.use(bodyParser.json({limit: '100mb'}));
 
 server.use(express.static(__dirname + '/public'));
 
+// routes ======================================================================
+
+
+
 server.get('*', function (req, res) {
-  res.sendFile('./public/views/index.html');
+  res.sendFile('public/views/index.html', {root: __dirname});
 });
 
+// start server ================================================================
 server.listen(port);
 
 module.exports = server;
