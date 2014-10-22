@@ -1,17 +1,37 @@
 var express = require('express')
+  , session = require('express-session')
   , bodyParser = require('body-parser')
-  , db = require('./app/db')
+  , cookieParser = require('cookie-parser')
+  , passport = require('passport')
+  //, routes = require('./app/routes')
   ;
+
+require('./app/db');
+require('./app/passport');
 
 var server = express()
   , port = process.env.PORT || 3001;
 
+server.use(cookieParser());
 server.use(bodyParser.urlencoded({extended: true}));
 server.use(bodyParser.json({limit: '100mb'}));
+
+server.use(session({
+  secret: 'secret',
+  saveUninitialized: true,
+  resave: true
+}));
+server.use(passport.initialize());
+server.use(passport.session());
 
 server.use(express.static(__dirname + '/public'));
 
 // Routes ======================================================================
+
+server.post('/register', passport.authenticate('register', {
+  successRedirect: '/user',
+  failureRedirect: '/'
+}));
 
 server.get('/', function (req, res) {
   res.sendFile('public/views/index.html', {root: __dirname});

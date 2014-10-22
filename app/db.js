@@ -1,4 +1,6 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose')
+  , bcrypt = require('bcrypt-nodejs')
+  ;
 
 // Configurations ==============================================================
 var config
@@ -15,6 +17,14 @@ userSchema = new mongoose.Schema({
   email: String,
   password: String
 });
+
+userSchema.methods.generateHash = function (password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+userSchema.methods.validPassword = function (password) {
+  return bcrypt.compareSync(password, this.password);
+};
 
 orgSchema = new mongoose.Schema({});
 
@@ -44,3 +54,5 @@ function getCollection (collection) {
 }
 
 // Methods =====================================================================
+
+exports.getCollection = getCollection;
