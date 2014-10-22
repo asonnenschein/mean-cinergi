@@ -1,1 +1,5 @@
-angular.module('CINERGI', ['ngRoute', 'Routes', 'Controllers']);
+angular.module('CINERGI', [
+    'ngRoute'
+  , 'Routes'
+  , 'Controllers'
+]);

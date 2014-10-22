@@ -1,5 +1,6 @@
 var express = require('express')
   , bodyParser = require('body-parser')
+  , db = require('./app/db')
   ;
 
 var server = express()
@@ -10,15 +11,13 @@ server.use(bodyParser.json({limit: '100mb'}));
 
 server.use(express.static(__dirname + '/public'));
 
-// routes ======================================================================
+// Routes ======================================================================
 
-
-
-server.get('*', function (req, res) {
+server.get('/', function (req, res) {
   res.sendFile('public/views/index.html', {root: __dirname});
 });
 
-// start server ================================================================
+// Start server ================================================================
 server.listen(port);
 
 module.exports = server;
