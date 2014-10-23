@@ -1,28 +1,59 @@
-var passport = require('passport')
-  , strategy = require('passport-local').Strategy
+var LocalStrategy = require('passport-local').Strategy
   , db = require('./db')
   ;
 
-var User = db.getCollection('users');
+function authenticate (passport) {
+  var User = db.getCollection('users');
 
-passport.use('register', new strategy({
-  usernameField: 'register-email',
-  passwordField: 'register-password',
-  passReqToCallback: true
-},
-function (req, email, password, done) {
-  console.log(req);
-  process.nextTick(function () {
-    User.findOne({'email': email}, function (err, res) {
-      if (err) return done(err);
-      if (res) return done(null, false);
-      var newUser = new User();
-      newUser.email = email;
-      newUser.password = newUser.generateHash(password);
-      newUser.save(function (err) {
-        if (err) throw err;
-        return done(null, newUser);
+  passport.serializeUser(function (user, done) {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+      done(err, user);
+    })
+  });
+
+  passport.use('register', new LocalStrategy({
+    usernameField: 'register-email',
+    passwordField: 'register-password',
+    passReqToCallback: true
+  },
+  function (req, email, password, done) {
+    process.nextTick(function () {
+      User.findOne({'email': email}, function (err, user) {
+        if (err) return done(err);
+
+        if (user) {
+          return done(null, false);
+        } else {
+          var newUser = User();
+          newUser.email = email;
+          newUser.password = newUser.generateHash(password);
+          newUser.save(function (err) {
+            if (err) throw err;
+            return done(null, newUser);
+          })
+        }
       })
     })
-  })
-}));
+  }));
+
+  passport.use('login', new LocalStrategy({
+    usernameField: 'login-email',
+    passwordField: 'login-password',
+    passReqToCallback: true
+  },
+  function (req, email, password, done) {
+    User.findOne({'email': email}, function (err, user) {
+      if (err) return done(err);
+      if (!user) return done(null, false);
+      if (!user.validPassword(password))
+        return done(null, false);
+      return done(null, user);
+    })
+  }))
+}
+
+module.exports = authenticate;

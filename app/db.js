@@ -13,6 +13,7 @@ var config
 config = {dbHost: 'localhost', dbPort: '27071', dbName: 'cinergi-mgmt'};
 mongoUrl = ['mongodb:/', config.dbHost, config.dbName].join('/');
 
+
 userSchema = new mongoose.Schema({
   email: String,
   password: String
