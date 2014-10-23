@@ -1,4 +1,4 @@
-angular.module('cinergi', ['ngResource', 'Controllers'])
+angular.module('cinergi', ['ngRoute', 'ngResource', 'Controllers'])
   .config(function ($routeProvider, $locationProvider, $httpProvider) {
 
     var isLoggedIn = function ($q, $timeout, $http, $location, $rootScope) {
@@ -38,17 +38,16 @@ angular.module('cinergi', ['ngResource', 'Controllers'])
       })
       .when('/user', {
         templateUrl: 'views/user.html',
-        controller: 'UserCtrl',
-        resolve: {
-          loggedin: isLoggedIn
-        }
+        controller: 'UserCtrl'
       })
 
   })
+  /*
   .run(function ($rootScope, $http) {
     $rootScope.message = '';
     $rootScope.logout = function () {
       $rootScope.message = 'Logged out.';
     }
   })
+  */
 ;

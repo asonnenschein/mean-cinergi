@@ -50,14 +50,14 @@
               <div class="form-title">
                 <h3>Signup</h3>
               </div>
-              <form action="/register" method="post" role="form">
+              <form ng-submit="register()">
                 <div class="form-group">
-                  <label for="register-email">Email address</label>
-                  <input type="email" class="form-control" name="register-email" id="register-email" placeholder="Enter email">
+                  <label class="control-label">Email address</label>
+                  <input type="email" class="form-control" placeholder="Enter email" ng-model="register.email" />
                 </div>
                 <div class="form-group">
-                  <label for="register-password">Password</label>
-                  <input type="password" class="form-control" name="register-password" id="register-password" placeholder="Password">
+                  <label class="control-label">Password</label>
+                  <input type="password" class="form-control" placeholder="Password" ng-model="register.password" />
                 </div>
                 <button type="submit" class="btn btn-default">Submit</button>
               </form>

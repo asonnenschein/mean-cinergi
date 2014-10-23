@@ -16,8 +16,8 @@ function authenticate (passport) {
   });
 
   passport.use('register', new LocalStrategy({
-    usernameField: 'register-email',
-    passwordField: 'register-password',
+    usernameField: 'email',
+    passwordField: 'password',
     passReqToCallback: true
   },
   function (req, email, password, done) {
@@ -41,8 +41,8 @@ function authenticate (passport) {
   }));
 
   passport.use('login', new LocalStrategy({
-    usernameField: 'login-email',
-    passwordField: 'login-password',
+    usernameField: 'email',
+    passwordField: 'password',
     passReqToCallback: true
   },
   function (req, email, password, done) {

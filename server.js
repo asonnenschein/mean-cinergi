@@ -22,10 +22,18 @@ server.use(passport.session());
 server.use(express.static(__dirname + '/public'));
 
 // Routes ======================================================================
-server.post('/register', passport.authenticate('register', {
-  successRedirect: '/user',
-  failureRedirect: '/'
-}));
+server.post('/register', passport.authenticate('register'), function (req, res) {
+  res.send(req.user);
+});
+
+/*
+server.post('/register', function (req, res, next) {
+  passport.authenticate('register', function (err, user, info) {
+    if (err) console.log(err);
+    if (!err) console.log(user, info);
+  })(req, res, next);
+});
+*/
 
 server.post('/login', passport.authenticate('login', {
   successRedirect: '/user',
