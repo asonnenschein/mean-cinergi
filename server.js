@@ -31,6 +31,9 @@ server.use(passport.session());
 server.use(express.static(__dirname + '/public'));
 
 // Routes ======================================================================
+/********
+ * POST *
+ ********/
 server.post('/register', passport.authenticate('register'), function (req, res) {
   res.send(req.user);
 });
@@ -39,17 +42,20 @@ server.post('/login', passport.authenticate('login'), function (req, res) {
   res.send(req.user);
 });
 
-server.post('/logout', function (req, res) {
-  req.logOut();
-  res.send(200);
-});
-
+/*******
+ * GET *
+ *******/
 server.get('/', function (req, res) {
   res.sendFile('public/views/index.html', {root: __dirname});
 });
 
 server.get('/loggedin', function (req, res) {
   res.send(req.isAuthenticated() ? req.user : '0');
+});
+
+server.get('/logout', function (req, res) {
+  req.logOut();
+  res.send(200);
 });
 
 // Start server ================================================================

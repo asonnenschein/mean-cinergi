@@ -1,4 +1,4 @@
-angular.module('cinergi', ['ngRoute', 'ngResource', 'Controllers'])
+angular.module('cinergi', ['ngRoute', 'ngResource', 'Services', 'Controllers'])
   .config(function ($routeProvider, $locationProvider, $httpProvider) {
     var loggedIn;
 
@@ -46,12 +46,18 @@ angular.module('cinergi', ['ngRoute', 'ngResource', 'Controllers'])
       })
 
   })
-  /*
-  .run(function ($rootScope, $http) {
+  .run(function ($rootScope, $http, $location) {
     $rootScope.message = '';
     $rootScope.logout = function () {
-      $rootScope.message = 'Logged out.';
+      $http.get('/logout', {
+
+      })
+      .success(function () {
+        $location.url('/');
+      })
+      .error(function () {
+        $location.url('/');
+      })
     }
   })
-  */
 ;

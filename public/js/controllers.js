@@ -1,16 +1,26 @@
 angular.module('Controllers', [])
-  .controller('AuthCtrl', function ($scope, $rootScope, $http, $location) {
-    $scope.user = {};
+  .controller('MainCtrl', function ($scope, AuthService) {
 
+    var auth = AuthService;
+    $scope.logged = function () {
+      return auth.isLoggedIn();
+    };
+
+  })
+  .controller('AuthCtrl', function ($scope, $rootScope, $http, $location, AuthService) {
+
+    var auth = AuthService;
     $scope.register = function () {
       $http.post('/register', {
         email: $scope.register.email,
         password: $scope.register.password
       })
       .success(function (user) {
+        auth.setLoggedIn(true);
         $location.url('/user');
       })
       .error(function () {
+        auth.setLoggedIn(false);
         $location.url('/');
       })
     };
@@ -21,26 +31,37 @@ angular.module('Controllers', [])
         password: $scope.login.password
       })
       .success(function (user) {
+        auth.setLoggedIn(true);
         $location.url('/user');
       })
       .error(function () {
+        auth.setLoggedIn(false);
         $location.url('/');
       })
     };
 
-  })
-  .controller('UserCtrl', function ($scope, $q, $timeout, $rootScope, $http, $location) {
+    $scope.logout = function () {
+      $http.get('/logout', {
+
+      })
+      .success(function () {
+        auth.setLoggedIn(false);
+        $location.url('/');
+      })
+      .error(function () {
+        auth.setLoggedIn(true);
+        $location.url('/');
+      })
+    };
+
+    /*
     $scope.loggedIn = function () {
-      $http.get('/loggedin').success(function (user) {
-        if (user !== '0') {
-          $timeout(deferred.resolve, 0);
-        } else {
-          $rootScope.message = 'Please log in.';
-          $timeout(function(){deferred.reject();}, 0);
-          $location.url('/');
-        }
-      });
-      return deferred.promise;
-    }
+      return true;
+    };
+    */
+
+  })
+  .controller('UserCtrl', function ($scope) {
+
   })
 ;
