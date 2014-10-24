@@ -8,23 +8,39 @@ angular.module('Controllers', [])
         password: $scope.register.password
       })
       .success(function (user) {
-        console.log('success');
-        $rootScope.message = 'Authentication successful!';
         $location.url('/user');
       })
       .error(function () {
-        console.log('failure');
-        $rootScope.message = 'Authentication failed.';
         $location.url('/');
       })
     };
 
     $scope.login = function () {
-
+      $http.post('/login', {
+        email: $scope.login.email,
+        password: $scope.login.password
+      })
+      .success(function (user) {
+        $location.url('/user');
+      })
+      .error(function () {
+        $location.url('/');
+      })
     };
 
   })
-  .controller('UserCtrl', function ($scope) {
-
+  .controller('UserCtrl', function ($scope, $q, $timeout, $rootScope, $http, $location) {
+    $scope.loggedIn = function () {
+      $http.get('/loggedin').success(function (user) {
+        if (user !== '0') {
+          $timeout(deferred.resolve, 0);
+        } else {
+          $rootScope.message = 'Please log in.';
+          $timeout(function(){deferred.reject();}, 0);
+          $location.url('/');
+        }
+      });
+      return deferred.promise;
+    }
   })
 ;

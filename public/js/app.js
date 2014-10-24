@@ -1,9 +1,10 @@
 angular.module('cinergi', ['ngRoute', 'ngResource', 'Controllers'])
   .config(function ($routeProvider, $locationProvider, $httpProvider) {
+    var loggedIn;
 
-    var isLoggedIn = function ($q, $timeout, $http, $location, $rootScope) {
+    loggedIn = function ($q, $timeout, $http, $location, $rootScope) {
       var deferred = $q.defer();
-      $http.get('/user').success(function (user) {
+      $http.get('/loggedin').success(function (user) {
         if (user !== '0') {
           $timeout(deferred.resolve, 0);
         } else {
@@ -38,7 +39,10 @@ angular.module('cinergi', ['ngRoute', 'ngResource', 'Controllers'])
       })
       .when('/user', {
         templateUrl: 'views/user.html',
-        controller: 'UserCtrl'
+        controller: 'UserCtrl',
+        resolve: {
+          loggedin: loggedIn
+        }
       })
 
   })

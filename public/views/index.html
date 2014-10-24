@@ -31,7 +31,11 @@
         </div>
         <div class="collapse navbar-collapse" id="cinergi-navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/login">Login</a></li>
+            <div ng-controller="UserCtrl">
+              <div ng-if="loggedIn()">
+                <li><a href="/logout">Logout</a></li>
+              </div>
+            </div>
           </ul>
         </div>
       </div>

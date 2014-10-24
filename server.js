@@ -5,9 +5,18 @@ var express = require('express')
   , passport = require('passport')
   ;
 
-var server = express()
-  , port = process.env.PORT || 3001
+var server
+  , port
+  , auth
   ;
+
+server = express();
+port = process.env.PORT || 3001;
+
+auth = function (req, res, next) {
+  if (!req.isAuthenticated()) res.send(401);
+  else return next();
+};
 
 require('./app/passport')(passport);
 
@@ -26,22 +35,21 @@ server.post('/register', passport.authenticate('register'), function (req, res) 
   res.send(req.user);
 });
 
-/*
-server.post('/register', function (req, res, next) {
-  passport.authenticate('register', function (err, user, info) {
-    if (err) console.log(err);
-    if (!err) console.log(user, info);
-  })(req, res, next);
+server.post('/login', passport.authenticate('login'), function (req, res) {
+  res.send(req.user);
 });
-*/
 
-server.post('/login', passport.authenticate('login', {
-  successRedirect: '/user',
-  failureRedirect: '/'
-}));
+server.post('/logout', function (req, res) {
+  req.logOut();
+  res.send(200);
+});
 
 server.get('/', function (req, res) {
   res.sendFile('public/views/index.html', {root: __dirname});
+});
+
+server.get('/loggedin', function (req, res) {
+  res.send(req.isAuthenticated() ? req.user : '0');
 });
 
 // Start server ================================================================
