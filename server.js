@@ -55,7 +55,7 @@ server.get('/loggedin', function (req, res) {
 
 server.get('/logout', function (req, res) {
   req.logOut();
-  res.send(200);
+  res.status(200).end();
 });
 
 // Start server ================================================================

@@ -46,16 +46,21 @@ angular.module('cinergi', ['ngRoute', 'ngResource', 'Services', 'Controllers'])
       })
 
   })
-  .run(function ($rootScope, $http, $location) {
+  .run(function ($rootScope, $http, $location, AuthService) {
+
+    var auth = AuthService;
+
     $rootScope.message = '';
     $rootScope.logout = function () {
       $http.get('/logout', {
 
       })
       .success(function () {
+        auth.setLoggedIn(false);
         $location.url('/');
       })
       .error(function () {
+        auth.setLoggedIn(true);
         $location.url('/');
       })
     }
