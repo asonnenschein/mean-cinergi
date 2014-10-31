@@ -31,7 +31,8 @@ $ bower install
 
 #### Initialize Develop Environment
 Initializing the application for development **deletes all data stored in the
-development database** and populates the database with sample data.
+development database** and populates the database with sample data.  MongoDB
+should be running before issuing the initialization command.
 ```
 $ cd mean-cinergi
 $ node app/cli.js --init
