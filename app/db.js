@@ -33,7 +33,12 @@ userSchema.methods.validPassword = function (password) {
 /***********************
  * Organization Schema *
  ***********************/
-orgSchema = new mongoose.Schema({});
+orgSchema = new mongoose.Schema({
+  name: String,
+  owner: String,
+  about: String,
+  members: Array
+});
 
 /*******************
  * Metadata Schema *
@@ -42,13 +47,15 @@ metadataSchema = new mongoose.Schema({});
 
 db = mongoose.connect(mongoUrl);
 
-db.connection
+db
+  .connection
   .on('error', function (err) {
     console.log('Error connecting to MongoDB', err);
   })
   .on('open', function () {
     console.log('Connected to MongoDB');
-  });
+  })
+;
 
 function connectToMongoCollection (db, collection, schema) {
   return db.model(collection, schema);

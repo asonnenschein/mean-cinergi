@@ -3,6 +3,7 @@ var express = require('express')
   , bodyParser = require('body-parser')
   , cookieParser = require('cookie-parser')
   , passport = require('passport')
+  , routes = require('./app/routes')
   ;
 
 var server
@@ -34,13 +35,17 @@ server.use(express.static(__dirname + '/public'));
 /********
  * POST *
  ********/
-server.post('/register', passport.authenticate('register'), function (req, res) {
+server.post('/user/register', passport.authenticate('register'), function (req, res) {
   res.send(req.user);
 });
 
-server.post('/login', passport.authenticate('login'), function (req, res) {
+server.post('/user/login', passport.authenticate('login'), function (req, res) {
   res.send(req.user);
 });
+
+server.post('/organization/register', function (req, res, next) {
+  return next();
+}, routes.registerOrganization);
 
 /*******
  * GET *
@@ -49,11 +54,11 @@ server.get('/', function (req, res) {
   res.sendFile('public/views/index.html', {root: __dirname});
 });
 
-server.get('/loggedin', function (req, res) {
+server.get('/user/loggedin', function (req, res) {
   res.send(req.isAuthenticated() ? req.user : '0');
 });
 
-server.get('/logout', function (req, res) {
+server.get('/user/logout', function (req, res) {
   req.logOut();
   res.status(200).end();
 });
